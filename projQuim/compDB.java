@@ -5,122 +5,126 @@ public class compDB {
     final static Scanner LER = new Scanner(System.in);
     static ArrayList<compostos> list = new ArrayList<>();
 
+    // Preenche a lista de compostos com os dados fornecidos
     public static void setComp() {
-        // Adicionando os compostos com seus potenciais de redução e se são anions
-        list.add(new compostos("Li+", -3.04, false));
-        list.add(new compostos("Ca²+", -2.87, false));
-        list.add(new compostos("Na+", -2.71, false));
-        list.add(new compostos("Mg²+", -2.36, false));
-        list.add(new compostos("Al³+", -1.66, false));
-        list.add(new compostos("Zn²+", -0.76, false));
-        list.add(new compostos("Fe²+", -0.44, false));
-        list.add(new compostos("Co²+", -0.28, false));
-        list.add(new compostos("Ni²+", -0.25, false));
-        list.add(new compostos("Sn²+", -0.14, false));
+        compostos especie1 = new compostos();
+        especie1.setEspecie("Li+");
+        especie1.setPotencialDeRed(-3.04);
+        especie1.setAnion(false);
+        list.add(especie1);
+
+        compostos especie2 = new compostos();
+        especie2.setEspecie("Ca²+");
+        especie2.setPotencialDeRed(-2.87);
+        especie2.setAnion(false);
+        list.add(especie2);
+
+        compostos especie3 = new compostos();
+        especie3.setEspecie("Na+");
+        especie3.setPotencialDeRed(-2.71);
+        especie3.setAnion(false);
+        list.add(especie3);
+
+        compostos especie4 = new compostos();
+        especie4.setEspecie("Mg²+");
+        especie4.setPotencialDeRed(-2.36);
+        especie4.setAnion(false);
+        list.add(especie4);
+
+        compostos especie5 = new compostos();
+        especie5.setEspecie("Al³+");
+        especie5.setPotencialDeRed(-1.66);
+        especie5.setAnion(false);
+        list.add(especie5);
+
+        compostos especie6 = new compostos();
+        especie6.setEspecie("Zn²+");
+        especie6.setPotencialDeRed(-0.76);
+        especie6.setAnion(false);
+        list.add(especie6);
+
+        compostos especie7 = new compostos();
+        especie7.setEspecie("Fe²+");
+        especie7.setPotencialDeRed(-0.44);
+        especie7.setAnion(false);
+        list.add(especie7);
+
+        compostos especie8 = new compostos();
+        especie8.setEspecie("Co²+");
+        especie8.setPotencialDeRed(-0.28);
+        especie8.setAnion(false);
+        list.add(especie8);
+
+        compostos especie9 = new compostos();
+        especie9.setEspecie("Ni²+");
+        especie9.setPotencialDeRed(-0.25);
+        especie9.setAnion(false);
+        list.add(especie9);
+
+        compostos especie10 = new compostos();
+        especie10.setEspecie("Sn²+");
+        especie10.setPotencialDeRed(-0.14);
+        especie10.setAnion(false);
+        list.add(especie10);
     }
 
     public static void menu() {
-        System.out.println("Menu:");
-        System.out.println("1 - Selecionar metais para oxidação e redução");
-        System.out.print("Escolha uma opção: ");
-        int choice = LER.nextInt();
-
-        switch (choice) {
+        System.out.println("Selecione uma operação:");
+        System.out.println("1 - Calcular Potencial de Célula");
+        int escolha = LER.nextInt();
+        switch (escolha) {
             case 1:
-                System.out.println("Selecione os metais para oxidação e redução:");
+                System.out.println("Selecione as espécies para a célula eletroquímica:");
                 operacoes();
                 break;
             default:
-                System.out.println("Opção inválida.");
                 break;
         }
     }
 
     private static void operacoes() {
-        // Imprime a lista de espécies e seus potenciais de redução
-        System.out.println("Selecione o metal que oxida (Digite o número):");
+        // Imprimir a lista de espécies com seus potenciais de redução
+        System.out.println("Selecione as espécies (Digite o número) e insira os potenciais de oxidação:");
         for (int i = 0; i < list.size(); i++) {
             compostos especie = list.get(i);
             System.out.println(i + " - " + especie.getEspecie() + " (Potencial de Red: " + especie.getPotencialDeRed() + " V)");
         }
 
-        // Obter a escolha do metal que oxida
-        int yOxidante = LER.nextInt();
-        compostos especieOxidante = list.get(yOxidante);
-        System.out.println("Você selecionou: " + especieOxidante.getEspecie());
+        // Escolher as espécies
+        System.out.print("Selecione a espécie do ânodo (oxidação): ");
+        int indiceAnodo = LER.nextInt();
+        compostos especieAnodo = list.get(indiceAnodo);
+        System.out.println("Você selecionou: " + especieAnodo.getEspecie());
+        System.out.println("Potencial de Redução: " + especieAnodo.getPotencialDeRed() + " V");
 
-        System.out.println("Selecione o metal que reduz (Digite o número):");
-        // Imprime novamente a lista para o metal que reduz
-        for (int i = 0; i < list.size(); i++) {
-            compostos especie = list.get(i);
-            System.out.println(i + " - " + especie.getEspecie() + " (Potencial de Red: " + especie.getPotencialDeRed() + " V)");
-        }
+        System.out.print("Selecione a espécie do cátodo (redução): ");
+        int indiceCatodo = LER.nextInt();
+        compostos especieCatodo = list.get(indiceCatodo);
+        System.out.println("Você selecionou: " + especieCatodo.getEspecie());
+        System.out.println("Potencial de Redução: " + especieCatodo.getPotencialDeRed() + " V");
 
-        // Obter a escolha do metal que reduz
-        int yRedutor = LER.nextInt();
-        compostos especieRedutor = list.get(yRedutor);
-        System.out.println("Você selecionou: " + especieRedutor.getEspecie());
+        // Pedir o potencial de oxidação do ânodo
+        System.out.print("Digite o potencial de oxidação da espécie " + especieAnodo.getEspecie() + " (em V): ");
+        double oxidaAnodo = LER.nextDouble();
 
-        // Calcular o potencial de célula (E° da célula)
-        calcularPotencial(especieOxidante, especieRedutor);
-    }
+        // O potencial de oxidação é negativo do valor de redução
+        double oxiAnodo = -oxidaAnodo;
+        System.out.println("Potencial de Oxidação (Ânodo): " + oxiAnodo + " V");
 
-    private static void calcularPotencial(compostos oxidante, compostos redutor) {
-        // O potencial da célula (E°cel) é a diferença entre o potencial do redutor e o do oxidante
-        double eCelula = redutor.getPotencialDeRed() - oxidante.getPotencialDeRed();
-        
-        System.out.println("Potencial da célula (E°cel): " + eCelula + " V");
-        
-        if (eCelula > 0) {
-            System.out.println("A reação é espontânea.");
+        // Calcular o potencial de célula
+        double potencialCelula = especieCatodo.getPotencialDeRed() - oxiAnodo;
+        System.out.println("Potencial da célula eletroquímica: " + potencialCelula + " V");
+
+        // Exibir se a célula é espontânea
+        if (potencialCelula > 0) {
+            System.out.println("A célula é espontânea.");
         } else {
-            System.out.println("A reação não é espontânea.");
+            System.out.println("A célula não é espontânea.");
         }
     }
 
     public static void main(String[] args) {
-        // Preencher a lista de compostos
-        setComp();
-
-        // Chamar o menu principal
-        menu();
-    }
-}
-
-class compostos {
-    private String especie;
-    private double potencialDeRed;
-    private boolean anion;
-
-    // Construtor
-    public compostos(String especie, double potencialDeRed, boolean anion) {
-        this.especie = especie;
-        this.potencialDeRed = potencialDeRed;
-        this.anion = anion;
-    }
-
-    // Métodos getters e setters
-    public String getEspecie() {
-        return especie;
-    }
-
-    public void setEspecie(String especie) {
-        this.especie = especie;
-    }
-
-    public double getPotencialDeRed() {
-        return potencialDeRed;
-    }
-
-    public void setPotencialDeRed(double potencialDeRed) {
-        this.potencialDeRed = potencialDeRed;
-    }
-
-    public boolean isAnion() {
-        return anion;
-    }
-
-    public void setAnion(boolean anion) {
-        this.anion = anion;
+        setComp();  // Inicializar as espécies
+        menu();  // Chamar o menu
     }
 }
