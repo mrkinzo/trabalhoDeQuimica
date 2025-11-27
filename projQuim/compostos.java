@@ -12,7 +12,7 @@ public class compostos {
    public float getPotencialDeRed() {
     return potencialDeRed;
    }
-   public void setPotencialDeRed(float potencialDeRed) {
+   public void setPotencialDeRed(double potencialDeRed) {
     this.potencialDeRed = potencialDeRed;
    }
    public boolean isAnion() {
