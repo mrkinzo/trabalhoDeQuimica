@@ -18,5 +18,9 @@ public class compostos {
    public void setAnion(boolean anion) {
     this.anion = anion;
    }
+   public int getPotencialDeRed() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getPotencialDeRed'");
+   }
    
 }
