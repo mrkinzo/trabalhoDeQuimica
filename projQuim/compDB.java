@@ -84,11 +84,17 @@ public class compDB {
         String reducaoCatodo = semirreacoes.get(catodo);
         String oxidacaoAnodo = inverterSemirreacao(semirreacoes.get(anodo));
 
+        // ===== Balanceamento para obter reação global =====
+        String reacaoGlobal = montarReacaoGlobal(oxidacaoAnodo, reducaoCatodo);
+
         System.out.println("\nSemirreação no ÂNODO (oxidação):");
         System.out.println(oxidacaoAnodo + "    E°oxi = " + EoxiAnodo + " V");
 
         System.out.println("\nSemirreação no CÁTODO (redução):");
         System.out.println(reducaoCatodo + "    E°red = " + EredCatodo + " V");
+
+        System.out.println("\n===== REAÇÃO GLOBAL =====");
+        System.out.println(reacaoGlobal);
 
         System.out.println("\nPotencial da célula: " + Ecelula + " V");
         if (Ecelula > 0)
@@ -97,10 +103,76 @@ public class compDB {
             System.out.println("A célula NÃO é funcional.");
     }
 
-    // Função para inverter semirreação (redução → oxidação)
+    // Inverte a semirreação de redução → oxidação
     private static String inverterSemirreacao(String reducao) {
         String[] lados = reducao.split("→");
         return lados[1].trim() + " → " + lados[0].trim();
+    }
+
+    // Extrai o número de elétrons da semirreação (ex.: "2e⁻")
+    private static int extrairEletrons(String semi) {
+        if (semi.contains(" e⁻")) {
+            String antes = semi.split("e⁻")[0].trim();
+            String numero = antes.substring(antes.length() - 1);
+            return Integer.parseInt(numero);
+        }
+        return 1;
+    }
+
+    // Monta a reação global multiplicando as semirreações
+    private static String montarReacaoGlobal(String oxidacao, String reducao) {
+
+        int eOx = extrairEletrons(oxidacao);
+        int eRed = extrairEletrons(reducao);
+
+        // mínimo múltiplo comum para cancelar elétrons
+        int mmc = lcm(eOx, eRed);
+
+        int fatorOx = mmc / eOx;
+        int fatorRed = mmc / eRed;
+
+        // Multiplica semirreações
+        String ox = multiplicarSemirreacao(oxidacao, fatorOx);
+        String red = multiplicarSemirreacao(reducao, fatorRed);
+
+        // Remove elétrons e soma
+        String ladoEsq = ox.split("→")[0].trim() + " + " + red.split("→")[0].trim();
+        String ladoDir = ox.split("→")[1].trim() + " + " + red.split("→")[1].trim();
+
+        // Remove elétrons
+        ladoEsq = ladoEsq.replaceAll("[0-9]*e⁻", "").replaceAll("\\+\\s*\\+", "+");
+        ladoDir = ladoDir.replaceAll("[0-9]*e⁻", "").replaceAll("\\+\\s*\\+", "+");
+
+        return ladoEsq.trim() + " → " + ladoDir.trim();
+    }
+
+    private static String multiplicarSemirreacao(String semi, int fator) {
+        if (fator == 1) return semi;
+
+        String[] lados = semi.split("→");
+        return multiplicarLado(lados[0], fator)
+                + " → " +
+                multiplicarLado(lados[1], fator);
+    }
+
+    private static String multiplicarLado(String lado, int fator) {
+        String[] partes = lado.split("\\+");
+        StringBuilder sb = new StringBuilder();
+
+        for (String p : partes) {
+            p = p.trim();
+            sb.append(fator).append(p.startsWith(fator + "") ? "" : " ").append(p).append(" + ");
+        }
+
+        return sb.substring(0, sb.length() - 3);
+    }
+
+    private static int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    private static int lcm(int a, int b) {
+        return a * b / gcd(a, b);
     }
 
     public static void main(String[] args) {
